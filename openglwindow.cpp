@@ -85,6 +85,14 @@ bool OpenGLWindow::event(QEvent *event)
     }
 }
 
+void OpenGLWindow::setAnimating(bool animating)
+{
+    m_animating = animating;
+
+    if (animating)
+        renderLater();
+}
+
 void OpenGLWindow::exposeEvent(QExposeEvent *event)
 {
     Q_UNUSED(event);

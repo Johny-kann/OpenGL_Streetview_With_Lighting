@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    openglwindow.cpp
+    openglwindow.cpp \
+    texturemapping.cpp
 
 HEADERS  += mainwindow.h \
-    openglwindow.h
+    openglwindow.h \
+    texturemapping.h
 
 FORMS    += mainwindow.ui
