@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     w.show();
 
-    w.setAnimating(false);
+    w.setAnimating(true);
 
     return a.exec();
 }

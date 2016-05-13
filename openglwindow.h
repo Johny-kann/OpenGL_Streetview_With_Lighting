@@ -4,6 +4,7 @@
 #include <QWindow>
 #include <QOpenGLFunctions>
 #include <QOpenGLPaintDevice>
+#include <QTimer>
 
 class OpenGLWindow : public QWindow, protected QOpenGLFunctions
 {
@@ -23,6 +24,7 @@ class OpenGLWindow : public QWindow, protected QOpenGLFunctions
    public slots:
        void renderLater();
        void renderNow();
+       void updateFrame();
 
    protected:
        bool event(QEvent *event) Q_DECL_OVERRIDE;
@@ -32,6 +34,7 @@ class OpenGLWindow : public QWindow, protected QOpenGLFunctions
    private:
        bool m_update_pending;
        bool m_animating;
+       QTimer *timer;
 
        QOpenGLContext *m_context;
        QOpenGLPaintDevice *m_device;

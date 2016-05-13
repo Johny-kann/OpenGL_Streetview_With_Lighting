@@ -9,17 +9,26 @@ OpenGLWindow::OpenGLWindow(QWindow *parent)
     , m_device(0)
 {
     setSurfaceType(QWindow::OpenGLSurface);
+    timer = new QTimer(parent);
+    connect(timer,SIGNAL(timeout()),this, SLOT(updateFrame()));
+    timer->start(50);
 }
 
 
 OpenGLWindow::~OpenGLWindow()
 {
-
+    delete this->timer;
 }
 
 void OpenGLWindow::initialize()
 {
 
+}
+
+void OpenGLWindow::updateFrame()
+{
+    if(m_animating)
+        this->renderLater();
 }
 
 void OpenGLWindow::render()

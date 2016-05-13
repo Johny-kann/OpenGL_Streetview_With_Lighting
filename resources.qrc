@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Cube.bmp</file>
+        <file>tf2.frag</file>
+        <file>tv2.vert</file>
+        <file>image/NeHe.bmp</file>
+    </qresource>
+</RCC>

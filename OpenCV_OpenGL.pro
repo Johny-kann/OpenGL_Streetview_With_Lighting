@@ -22,3 +22,6 @@ HEADERS  += mainwindow.h \
     texturemapping.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resources.qrc
