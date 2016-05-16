@@ -11,7 +11,7 @@ OpenGLWindow::OpenGLWindow(QWindow *parent)
     setSurfaceType(QWindow::OpenGLSurface);
     timer = new QTimer(parent);
     connect(timer,SIGNAL(timeout()),this, SLOT(updateFrame()));
-    timer->start(50);
+    timer->start(100);
 }
 
 
@@ -70,8 +70,8 @@ void OpenGLWindow::renderNow()
 
     m_context->swapBuffers(this);
 
-    if (m_animating)
-        renderLater();
+ //   if (m_animating)
+ //       renderLater();
 }
 
 void OpenGLWindow::renderLater()

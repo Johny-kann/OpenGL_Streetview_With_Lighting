@@ -37,19 +37,96 @@ void TextureMapping::initGeometry()
     glGenBuffers(1,&index);
 
     GLfloat vertices[] = {
-        -0.5f, -0.5f, -0.5f,    //Front
+        0.5f, 0.5f, -0.5f,      //Front
         0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, 0.5f, -0.5f,
         0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
+
+        -0.5f, -0.5f,0.5f,
+        0.5f, -0.5f, 0.5f,
+        0.5f, 0.5f, 0.5f,      //Back
+
+       0.5f, 0.5f, 0.5f,
+       -0.5f, 0.5f, 0.5f,
+       -0.5f, -0.5f,0.5f,
+
+        -0.5f, -0.5f, -0.5f,    //Left
+        -0.5f, -0.5f, 0.5f,
+        -0.5f, 0.5f, 0.5f,
+        -0.5f, 0.5f, 0.5f,
         -0.5f, 0.5f, -0.5f,
         -0.5f, -0.5f, -0.5f,
 
-        -0.5f, -0.5f,0.5f,    //Back
+        0.5f, 0.5f, 0.5f,
         0.5f, -0.5f, 0.5f,
-         0.5f, 0.5f, 0.5f,
-         0.5f, 0.5f, 0.5f,
+        0.5f, -0.5f, -0.5f,    //Right
+        0.5f, -0.5f, -0.5f,
+        0.5f, 0.5f, -0.5f,
+        0.5f, 0.5f, 0.5f,
+
+        0.5f, 0.5f, 0.5f,
+        0.5f, 0.5f, -0.5f,
+        -0.5f, 0.5f, -0.5f,     //Top
+
+       -0.5f, 0.5f, -0.5f,
         -0.5f, 0.5f, 0.5f,
-        -0.5f, -0.5f,0.5f,
+        0.5f, 0.5f, 0.5f,
+
+
+        -0.5f, -0.5f, -0.5f,     //Bottom
+        0.5f, -0.5f, -0.5f,
+        0.5f, -0.5f, 0.5f,
+        0.5f, -0.5f, 0.5f,
+        -0.5f, -0.5f, 0.5f,
+        -0.5f, -0.5f, -0.5f
+    };
+
+    GLfloat uv_data_mag[] = {
+        0.33f, 0.5f,     //Front
+        0.0f, 0.5f,
+        0.0f, 1.0f,
+        0.0f, 1.0f,
+        0.33f, 1.0f,
+        0.33f, 0.5f,
+
+        0.33f, 0.5f,     //Back
+        0.66f, 0.5f,
+        0.66f, 1.0f,
+        0.66f, 1.0f,
+        0.33f, 1.0f,
+        0.33f, 0.5f,
+
+        0.66f, 0.5f,     //Left
+        1.0f, 0.5f,
+        1.0f, 1.0f,
+        1.0f, 1.0f,
+        0.66f, 1.0f,
+        0.66f, 0.5f,
+
+        0.33f, 0.0f,     //Right
+        0.0f, 0.0f,
+        0.0f, 0.5f,
+        0.0f, 0.5f,
+        0.33f, 0.5f,
+        0.33f, 0.0f,
+
+        0.66f, 0.0f,     //Top
+        0.33f, 0.0f,
+        0.33f, 0.5f,
+        0.33f, 0.5f,
+        0.66f, 0.5f,
+        0.66f, 0.0f,
+
+        0.66f, 0.0f,     //Bottom
+        1.0f, 0.0f,
+        1.0f, 0.5f,
+        1.0f, 0.5f,
+        0.66f, 0.5f,
+        0.66f, 0.0f,
+
     };
 
 
@@ -170,7 +247,7 @@ void TextureMapping::initGeometry()
 
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[1]);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(uv_data), uv_data,GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(uv_data_mag), uv_data_mag,GL_STATIC_DRAW);
 
   qDebug()<<vertexbuffer[0]<<vertexbuffer[1]<<index;
 
@@ -193,15 +270,22 @@ void TextureMapping::loadShader()
 
 void TextureMapping::initialize()
 {
+
     initGeometry();
     loadGLTexture();
     loadShader();
 
-       glEnable(GL_DEPTH_TEST);
-//       glEnable(GL_CULL_FACE);
-       glEnable(GL_TEXTURE_2D);
 
-       glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+
+    glShadeModel(GL_SMOOTH);
+
+    glDepthFunc(GL_LESS);
+//    glDepthMask(GL_TRUE);
+    glEnable(GL_TEXTURE_2D);
+//    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_MODELVIEW);
 
 }
 
@@ -214,6 +298,10 @@ void TextureMapping::render()
         glViewport(0, 0, width() * retinaScale, height() * retinaScale);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_MODELVIEW);
+        glEnable(GL_DEPTH_TEST);
+
+        glDepthFunc(GL_LESS);
 
         m_program->bind();
 
@@ -249,8 +337,10 @@ void TextureMapping::render()
         glBindTexture(GL_TEXTURE_2D, textureID);
 //        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3*2*2);
+        glDrawArrays(GL_TRIANGLES, 0, 3*2*6);
 //        glDrawElements(GL_TRIANGLE_STRIP,9,GL_UNSIGNED_INT,(void*)0);
+        glDisableVertexAttribArray(m_texCoordAttr);
+        glDisableVertexAttribArray(m_posAttr);
 
 
         m_program->release();
