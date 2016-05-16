@@ -211,15 +211,19 @@ void TextureMapping::render()
 
         m_program->bind();
 
-        QMatrix4x4 matrix;
-        matrix.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
+        QMatrix4x4 matrix, perspective;
+
+        matrix.setToIdentity();
+        perspective.setToIdentity();
+
+        perspective.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
+
         matrix.translate(0, 0, -4);
- //       matrix.rotate(90,0,0,1);
-        matrix.rotate(30,-1,0,0);
+       matrix.rotate(30,-1,0,0);
 
 //        matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
 
-        matrix.rotate(45,0,-1,0);
+       matrix.rotate(45,0,-1,0);
 //        matrix.rotate(angle, 0,1,0);
 
         angle+=5;
@@ -227,7 +231,7 @@ void TextureMapping::render()
             angle %= 360;
 
 
-        m_program->setUniformValue(m_matrixUniform, matrix);
+        m_program->setUniformValue(m_matrixUniform, perspective*matrix);
 
         glActiveTexture(GL_TEXTURE0);
 
