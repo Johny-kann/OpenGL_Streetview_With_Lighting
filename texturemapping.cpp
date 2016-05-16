@@ -17,10 +17,9 @@ TextureMapping::~TextureMapping()
 
 void TextureMapping::loadGLTexture()
 {
-//    QImage image(":/image/NeHe.bmp");
-    QImage image(":/Cube.bmp");
+    QImage image(":/image/Output.bmp");
     image = image.convertToFormat(QImage::Format_RGB888);
-    image = image.mirrored();
+//    image = image.mirrored();
 
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -56,6 +55,7 @@ void TextureMapping::initGeometry()
         -0.5f, -0.5f, -0.5f,    //Left
         -0.5f, -0.5f, 0.5f,
         -0.5f, 0.5f, 0.5f,
+
         -0.5f, 0.5f, 0.5f,
         -0.5f, 0.5f, -0.5f,
         -0.5f, -0.5f, -0.5f,
@@ -85,154 +85,60 @@ void TextureMapping::initGeometry()
     };
 
     GLfloat uv_data_mag[] = {
-        0.33f, 0.5f,     //Front
-        0.0f, 0.5f,
-        0.0f, 1.0f,
-        0.0f, 1.0f,
-        0.33f, 1.0f,
-        0.33f, 0.5f,
 
-        0.33f, 0.5f,     //Back
-        0.66f, 0.5f,
-        0.66f, 1.0f,
-        0.66f, 1.0f,
-        0.33f, 1.0f,
-        0.33f, 0.5f,
+        0.75f, 0.333f,
+        0.75f, 0.666f,
+        1.0f, 0.666f,     //Front
 
-        0.66f, 0.5f,     //Left
-        1.0f, 0.5f,
-        1.0f, 1.0f,
-        1.0f, 1.0f,
-        0.66f, 1.0f,
-        0.66f, 0.5f,
+        1.0f, 0.666f,
+        1.0f, 0.333f,
+        .75f, 0.333f,
 
-        0.33f, 0.0f,     //Right
-        0.0f, 0.0f,
-        0.0f, 0.5f,
-        0.0f, 0.5f,
-        0.33f, 0.5f,
-        0.33f, 0.0f,
+        0.25f, 0.666f,
+        0.5f, 0.666f,
+        0.5f, 0.333f,
 
-        0.66f, 0.0f,     //Top
-        0.33f, 0.0f,
-        0.33f, 0.5f,
-        0.33f, 0.5f,
-        0.66f, 0.5f,
-        0.66f, 0.0f,
+        0.5f, 0.333f,
+        0.25f, 0.333f,     //Back
+        0.25f, 0.666f,
 
-        0.66f, 0.0f,     //Bottom
-        1.0f, 0.0f,
-        1.0f, 0.5f,
-        1.0f, 0.5f,
-        0.66f, 0.5f,
-        0.66f, 0.0f,
+        0.0f, 0.666f,     //Left
+        0.25f, 0.666f,
+        0.25f, 0.333f,
 
-    };
+        0.25f, 0.333f,
+        0.0f, 0.333f,
+        0.0f, 0.666,
+
+        0.5f, 0.333f,     //Right
+        0.5f, 0.666f,
+        0.75f, 0.666f,
+
+        0.75f, 0.666f,
+        0.75f, 0.333f,
+        0.5f, 0.333,
 
 
-    GLfloat uv_data[] = {
-        1.0f, 0.0f,     //Front
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f,
+        0.5f, 0.333f,
+        0.5f, 0.0f,
+        0.25f, 0.0f,
 
-        0.0f, 0.0f,     //Back
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        0.0f, 0.0f
+        0.25f, 0.0f,
+        0.25f, 0.333f,     //Top
+        0.5f, 0.333f,
+
+        0.25f, 1.0f,
+        0.5f, 1.0f,
+        0.5f, 0.666f,
+
+        0.5f, 0.666f,
+        0.25f, 0.666f,     //Bottom
+        0.25f, 1.0f,
 
     };
 
 
-    GLfloat vertices2[] = {
-        -0.5f, -0.5f, -0.5f,   //Front
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-
-        -0.5f, -0.5f, 0.5f,   //Back
-        0.5f, -0.5f, 0.5f,
-        0.5f, 0.5f, 0.5f,
-        -0.5f, 0.5f, 0.5f,
-
-        -0.5f, 0.5f, 0.5f,   //Top
-        0.5f, 0.5f, 0.5f,
-        0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-
-        -0.5f, -0.5f, 0.5f,   //Bottom
-        0.5f, -0.5f, 0.5f,
-        0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, -0.5f, 0.5f,   //Left
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, 0.5f, 0.5f,
-
-        0.5f, -0.5f, 0.5f,   //Right
-        0.5f, -0.5f, -0.5f,
-        0.5f, 0.5f, -0.5f,
-        0.5f, 0.5f, 0.5f,
-    };
-
-    GLfloat colors2[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 0.0f,
-    };
-
-    GLfloat uv_data2[] = {
-        0.0f, 0.0f,         //Front
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-
-        0.0f, 0.0f,         //Back
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-
-        0.0f, 0.0f,         //Top
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-
-        0.0f, 0.0f,         //Bottom
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-
-        0.0f, 0.0f,         //Left
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-
-        0.0f, 0.0f,         //Right
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-    };
-
-
-
-        GLfloat colors[] = {
-            1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f,
-
-            1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f
-        };
-
-
-        GLuint indices[] = {
+    GLuint indices[] = {
                              0,1,2,2,3,0,
                             4,5,6,6,7,4,
                              8,9,10,10,8,11,
@@ -308,10 +214,13 @@ void TextureMapping::render()
         QMatrix4x4 matrix;
         matrix.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
         matrix.translate(0, 0, -4);
-        matrix.rotate(30,1,0,0);
+ //       matrix.rotate(90,0,0,1);
+        matrix.rotate(30,-1,0,0);
+
 //        matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
 
-        matrix.rotate(angle, 0,1,0);
+        matrix.rotate(45,0,-1,0);
+//        matrix.rotate(angle, 0,1,0);
 
         angle+=5;
         if(angle>360)

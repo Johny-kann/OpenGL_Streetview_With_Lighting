@@ -12,6 +12,10 @@ TARGET = OpenCV_OpenGL
 TEMPLATE = app
 
 
+#INCLUDEPATH += `pkg-config --cflags opencv`
+#LIBS += `pkg-config --libs opencv`
+
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     openglwindow.cpp \
