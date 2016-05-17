@@ -6,7 +6,7 @@
 #include <QOpenGLContext>
 #include <QList>
 #include <QVector2D>
-#include <QVector3D>
+#include "camera.h"
 
 struct VertexData
 {
@@ -30,6 +30,12 @@ public:
     void loadGLTexture();
     void loadShader();
 
+protected:
+    void keyPressEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+
 private:
     GLuint m_posAttr;
     GLuint m_colAttr;
@@ -42,6 +48,10 @@ private:
     GLuint textureID;
     GLuint index;
     int m_frame;
+    QPoint last_mouse;
+    bool press;
+
+    Camera camera;
 
 };
 

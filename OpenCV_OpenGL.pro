@@ -19,11 +19,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     openglwindow.cpp \
-    texturemapping.cpp
+    texturemapping.cpp \
+    camera.cpp
 
 HEADERS  += mainwindow.h \
     openglwindow.h \
-    texturemapping.h
+    texturemapping.h \
+    camera.h
 
 FORMS    += mainwindow.ui
 

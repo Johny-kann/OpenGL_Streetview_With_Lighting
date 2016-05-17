@@ -11,7 +11,7 @@ OpenGLWindow::OpenGLWindow(QWindow *parent)
     setSurfaceType(QWindow::OpenGLSurface);
     timer = new QTimer(parent);
     connect(timer,SIGNAL(timeout()),this, SLOT(updateFrame()));
-    timer->start(100);
+    timer->start(50);
 }
 
 

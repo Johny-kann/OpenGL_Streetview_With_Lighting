@@ -1,10 +1,13 @@
 #include "texturemapping.h"
 #include <QDebug>
 #include <QScreen>
-
+#include <QMouseEvent>
 
 TextureMapping::TextureMapping(QWindow *parent):OpenGLWindow(parent)
 {
+
+    camera.position(0,0,-4);
+    press = false;
 
 }
 
@@ -13,6 +16,47 @@ TextureMapping::~TextureMapping()
     glDeleteTextures(1, &textureID);
        glDeleteBuffers(2, &vertexbuffer[0]);
        glDeleteBuffers(1, &index);
+}
+
+void TextureMapping::keyPressEvent(QKeyEvent *event)
+{
+    switch(event->key())
+    {
+        case Qt::Key_A: camera.addAngles(0,-1,0);
+                        qDebug()<<"A";
+                        break;
+        case Qt::Key_D: camera.addAngles(0,1,0);;
+                        break;
+
+    case Qt::Key_W: camera.addAngles(-1,0,0);
+                    break;
+
+    case Qt::Key_S: camera.addAngles(1,0,0);
+                    break;
+
+    default: break;
+    }
+}
+
+void TextureMapping::mousePressEvent(QMouseEvent *event)
+{
+    press = true;
+    last_mouse = event->pos();
+}
+
+void TextureMapping::mouseMoveEvent(QMouseEvent *event)
+{
+    int dx = event->x() - last_mouse.x();
+    int dy = event->y() - last_mouse.y();
+
+    if (event->buttons() & Qt::LeftButton) {
+        camera.addAngles((double)dy/40, (double)dx/40, 0);
+    }
+}
+
+void TextureMapping::mouseReleaseEvent(QMouseEvent *event)
+{
+    press = false;
 }
 
 void TextureMapping::loadGLTexture()
@@ -174,6 +218,7 @@ void TextureMapping::loadShader()
        qDebug()<<m_posAttr<<m_colAttr<<m_texCoordAttr<<m_matrixUniform<<m_textureUniform;
 }
 
+
 void TextureMapping::initialize()
 {
 
@@ -211,34 +256,40 @@ void TextureMapping::render()
 
         m_program->bind();
 
-        QMatrix4x4 matrix, perspective;
+        QMatrix4x4 matrix, perspective, cam_matrix;
 
         matrix.setToIdentity();
         perspective.setToIdentity();
+        cam_matrix.setToIdentity();
+
+        cam_matrix.translate(camera.position_axis);
 
         perspective.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
 
-        matrix.translate(0, 0, -4);
-       matrix.rotate(30,-1,0,0);
+        matrix.translate(0, 0, 0);
 
-//        matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
+        cam_matrix.rotate(camera.angle.x()*2, 1, 0, 0);
+        cam_matrix.rotate(camera.angle.y()*2, 0, 1, 0);
+        cam_matrix.rotate(camera.angle.z()*2, 0, 0, 1);
 
-       matrix.rotate(45,0,-1,0);
-//        matrix.rotate(angle, 0,1,0);
+        if(!press)
+        {
+        matrix.rotate(angle, 0,1,0);
 
-        angle+=5;
+        angle+=2;
         if(angle>360)
             angle %= 360;
+        }
 
 
-        m_program->setUniformValue(m_matrixUniform, perspective*matrix);
+        m_program->setUniformValue(m_matrixUniform, perspective*cam_matrix*matrix);
 
         glActiveTexture(GL_TEXTURE0);
 
          glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[0]);
-//        m_program->enableAttributeArray(m_posAttr);
+
         glEnableVertexAttribArray(m_posAttr);
-//        m_program->setAttributeBuffer(m_posAttr, GL_FLOAT, 0, 3);
+
         glVertexAttribPointer(m_posAttr,3,GL_FLOAT,GL_FALSE,0,(void*)0);
 
 
@@ -248,10 +299,8 @@ void TextureMapping::render()
         glVertexAttribPointer(m_texCoordAttr, 2, GL_FLOAT, GL_FALSE,0,(void*)0);
 
         glBindTexture(GL_TEXTURE_2D, textureID);
-//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
 
         glDrawArrays(GL_TRIANGLES, 0, 3*2*6);
-//        glDrawElements(GL_TRIANGLE_STRIP,9,GL_UNSIGNED_INT,(void*)0);
         glDisableVertexAttribArray(m_texCoordAttr);
         glDisableVertexAttribArray(m_posAttr);
 
