@@ -23,7 +23,6 @@ void TextureMapping::keyPressEvent(QKeyEvent *event)
     switch(event->key())
     {
         case Qt::Key_A: camera.addAngles(0,-1,0);
-                        qDebug()<<"A";
                         break;
         case Qt::Key_D: camera.addAngles(0,1,0);;
                         break;
@@ -182,14 +181,6 @@ void TextureMapping::initGeometry()
     };
 
 
-    GLuint indices[] = {
-                             0,1,2,2,3,0,
-                            4,5,6,6,7,4,
-                             8,9,10,10,8,11,
-                            12,13,14,14,12,15,
-                             16,17,18,18,16,19,
-                             20,21,22,22,20,23
-                           };
 
     glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer[0]);
 
@@ -199,7 +190,6 @@ void TextureMapping::initGeometry()
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(uv_data_mag), uv_data_mag,GL_STATIC_DRAW);
 
-  qDebug()<<vertexbuffer[0]<<vertexbuffer[1]<<index;
 
 }
 

@@ -40,8 +40,6 @@ void OpenGLWindow::render()
 
     m_device->setSize(size());
 
-//    QPainter painter(m_device);
-//    render(&painter);
 }
 
 void OpenGLWindow::renderNow()
@@ -69,9 +67,6 @@ void OpenGLWindow::renderNow()
     render();
 
     m_context->swapBuffers(this);
-
- //   if (m_animating)
- //       renderLater();
 }
 
 void OpenGLWindow::renderLater()
