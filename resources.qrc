@@ -3,7 +3,6 @@
         <file>tf2.frag</file>
         <file>tv2.vert</file>
         <file>image/Output.png</file>
-        <file>image/Output.bmp</file>
         <file>image/Stitched_Image.jpg</file>
     </qresource>
 </RCC>
