@@ -27,7 +27,7 @@ HEADERS  += mainwindow.h \
     texturemapping.h \
     camera.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 RESOURCES += \
     resources.qrc
