@@ -3,11 +3,20 @@
 #include <QScreen>
 #include <QMouseEvent>
 
+
+QVector4D LightAmbient = QVector4D(0.5f, 0.5f, 0.5f, 1.0f);
+QVector4D LightDiffuse = QVector4D(1.0f, 1.0f, 1.0f, 1.0f);
+QVector4D LightPosition = QVector4D(0.0f, 0.0f, 2.0f, 1.0f);
+QVector4D LightModelAmbient = QVector4D(0.2, 0.2, 0.2, 1.0);
+QVector4D MaterialDiffuse = QVector4D(0.8f, 0.8f, 0.8f, 1.0f);
+QVector4D MaterialAmbient = QVector4D(0.2f, 0.2f, 0.2f, 1.0f);
+
 TextureMapping::TextureMapping(QWindow *parent):OpenGLWindow(parent)
 {
 
-    camera.position(0,0,0);
+    camera.position(0,0,-4);
     press = false;
+    m_light = true;
 
 }
 
@@ -31,6 +40,9 @@ void TextureMapping::keyPressEvent(QKeyEvent *event)
                     break;
 
     case Qt::Key_S: camera.addAngles(1,0,0);
+                    break;
+
+    case Qt::Key_L: m_light = !m_light;
                     break;
 
     default: break;
@@ -131,6 +143,57 @@ void TextureMapping::initGeometry()
         -0.5f, -0.5f, -0.5f
     };
 
+    GLfloat normals[] =
+    {
+        0.0f, 0.0f, 1.0f,           //Front
+         0.0f, 0.0f, 1.0f,
+         0.0f, 0.0f, 1.0f,
+
+        0.0f, 0.0f, 1.0f,
+         0.0f, 0.0f, 1.0f,
+         0.0f, 0.0f, 1.0f,
+
+        0.0f, 0.0f, -1.0f,           //Back
+         0.0f, 0.0f, -1.0f,
+         0.0f, 0.0f, -1.0f,
+
+        0.0f, 0.0f, -1.0f,
+         0.0f, 0.0f,-1.0f,
+         0.0f, 0.0f,-1.0f,
+
+        0.1f, 0.0f, 0.0f,           //Left
+         0.1f, 0.0f, 0.0f,
+         0.1f, 0.0f, 0.0f,
+
+        0.01, 0.0f, 0.0f,
+         0.1f, 0.0f,0.0f,
+         0.1f, 0.0f,0.0f,
+
+        -0.1f, 0.0f, 0.0f,           //Right
+        -0.1f, 0.0f, 0.0f,
+         -0.1f, 0.0f, 0.0f,
+
+        -0.01, 0.0f, 0.0f,
+         -0.1f, 0.0f,0.0f,
+         -0.1f, 0.0f,0.0f,
+
+        -0.1f, 0.0f, 0.0f,           //Right
+        -0.1f, 0.0f, 0.0f,
+         -0.1f, 0.0f, 0.0f,
+
+        -0.01, 0.0f, 0.0f,
+         -0.1f, 0.0f,0.0f,
+         -0.1f, 0.0f,0.0f,
+
+        -0.1f, 0.0f, 0.0f,           //Right
+        -0.1f, 0.0f, 0.0f,
+         -0.1f, 0.0f, 0.0f,
+
+        -0.01, 0.0f, 0.0f,
+         -0.1f, 0.0f,0.0f,
+         -0.1f, 0.0f,0.0f,
+    };
+
     GLfloat uv_data_mag[] = {
 
         0.75f, 0.333f,
@@ -194,6 +257,10 @@ void TextureMapping::initGeometry()
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(uv_data_mag), uv_data_mag,GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[2]);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW);
+
 
 }
 
@@ -208,6 +275,8 @@ void TextureMapping::loadShader()
        m_texCoordAttr = m_program->attributeLocation("texCoordAttr");
        m_matrixUniform = m_program->uniformLocation("mvpMatrix");
        m_textureUniform = m_program->uniformLocation("texture");
+       m_normalAttr = m_program->attributeLocation("normalAttr");
+
 
        qDebug()<<m_posAttr<<m_colAttr<<m_texCoordAttr<<m_matrixUniform<<m_textureUniform;
 }
@@ -240,15 +309,29 @@ void TextureMapping::render()
     static int angle = 0;
 
     const qreal retinaScale = devicePixelRatio();
+    m_program->bind();
+
         glViewport(0, 0, width() * retinaScale, height() * retinaScale);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//        m_program->setUniformValue("lightPos", LightPosition);
+//        m_program->setUniformValue("lightDiffuse", LightDiffuse);
+//        m_program->setUniformValue("lightAmbient", LightAmbient);
+//        m_program->setUniformValue("lightModelAmbient", LightModelAmbient);
+//        m_program->setUniformValue("materialDiffuse", MaterialDiffuse);
+//        m_program->setUniformValue("materialAmbient", MaterialAmbient);
+//        m_program->setUniformValue("enableLight", m_light);
+
+
         glMatrixMode(GL_MODELVIEW);
         glEnable(GL_DEPTH_TEST);
 
         glDepthFunc(GL_LESS);
 
-        m_program->bind();
+
+
+
+
 
         QMatrix4x4 matrix, perspective, cam_matrix;
 
@@ -277,6 +360,7 @@ void TextureMapping::render()
       //  }
 
 
+ //       m_program->setUniformValue("mvMatrix", cam_matrix * matrix);
         m_program->setUniformValue(m_matrixUniform, perspective*cam_matrix*matrix);
 
         glActiveTexture(GL_TEXTURE0);
@@ -288,10 +372,17 @@ void TextureMapping::render()
         glVertexAttribPointer(m_posAttr,3,GL_FLOAT,GL_FALSE,0,(void*)0);
 
 
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[2]);
+
+        glEnableVertexAttribArray(m_normalAttr);
+        glVertexAttribPointer(m_normalAttr, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[1]);
 
         glEnableVertexAttribArray(m_texCoordAttr);
         glVertexAttribPointer(m_texCoordAttr, 2, GL_FLOAT, GL_FALSE,0,(void*)0);
+
+
 
         glBindTexture(GL_TEXTURE_2D, textureID);
 

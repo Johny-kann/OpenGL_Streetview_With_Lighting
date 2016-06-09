@@ -42,14 +42,16 @@ private:
     GLuint m_texCoordAttr;
     GLuint m_matrixUniform;
     GLuint m_textureUniform;
+    GLuint m_normalAttr;
 
     QOpenGLShaderProgram *m_program;
-    GLuint vertexbuffer[2];
+    GLuint vertexbuffer[3];
     GLuint textureID;
     GLuint index;
     int m_frame;
     QPoint last_mouse;
     bool press;
+    bool m_light;
 
     Camera camera;
 
