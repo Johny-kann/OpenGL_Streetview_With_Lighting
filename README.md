@@ -19,4 +19,4 @@ Rendering the cube with OpenGL
 - Mouse actions to turn the camera
 - 'L' to turn ON light and OFF. Camera can be moved into and out of the cube. To be in a streetview, camera has to be inside the cube.
 
-See the below link for the rendered the cube https://www.youtube.com/watch?v=rNxMTq-zNqA
+See the below link for the rendered the cube https://www.youtube.com/watch?v=kX7dFycIJec
