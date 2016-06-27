@@ -3,10 +3,9 @@ An OpenGL Cube rendered with a Cube Map stitched using OpenCV
 
 Stitching Images with opencv and Rendering cube with stitched images
 
-Modules
-
-Stitching Images using OpenCV
-Rendering the cube with OpenGL
+# Modules
+- Stitching Images using OpenCV
+- Rendering the cube with OpenGL
 
 # Stitching Image
 - 21 images are stitched into a single image using Stitcher class in OpenCV into 360 deg panaromic view
