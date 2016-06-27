@@ -7,6 +7,9 @@ uniform bool enableLight;
 
 void main()
 {
+    vec4 color;
+    color = texture2D(texture, texCoord);
+
     if(enableLight)
     {
         vec3 ct,cf;
@@ -20,11 +23,13 @@ void main()
         ct = texel.rgb;
         at = texel.a;
 
-         gl_FragColor = vec4(ct * cf, at * af);
+        color = vec4(ct * cf, at * af);
 
     }
-    else
-    {
-    gl_FragColor = texture2D(texture, texCoord);
-    }
+//    else
+//    {
+
+    gl_FragColor = color;
+          //  texture2D(texture, texCoord);
+//  }
 }

@@ -30,4 +30,7 @@ void Camera::addAngles(float x, float y, float z)
 void Camera::addPos(float x, float y, float z)
 {
 
+    position_axis.setX(position_axis.x() + x);
+    position_axis.setY(position_axis.y() + y);
+    position_axis.setZ(position_axis.z() + z);
 }
